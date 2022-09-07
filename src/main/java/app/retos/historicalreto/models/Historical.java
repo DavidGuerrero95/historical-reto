@@ -1,5 +1,6 @@
 package app.retos.historicalreto.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -15,6 +16,7 @@ import java.util.List;
 public class Historical {
 
     @Id
+    @JsonIgnore
     private String id;
 
     private String eventId;

@@ -29,6 +29,7 @@ public class HistoricalController {
                                  @RequestParam("location") List<Double> location, @RequestParam("status") Integer status,
                                  @RequestParam("comment") String comment, @RequestParam("zoneCode") Integer zoneCode) throws IOException {
         try {
+            log.info("Se conecto correctamente");
             return historicalService.guardarEvento(eventId, type, date, time, eventDescription, location, status, comment, zoneCode);
         } catch (Exception e) {
             throw new IOException("Error crear historico del evento: " + eventId + " Error: " + e.getMessage());
@@ -36,7 +37,7 @@ public class HistoricalController {
     }
 
     @PutMapping("/files/{historicalId}")
-    public Boolean guardarFiles(@PathVariable("historicalId") String historicalId, FileEventResponse fileEventResponse) throws IOException {
+    public Boolean guardarFiles(@PathVariable("historicalId") String historicalId, @RequestBody FileEventResponse fileEventResponse) throws IOException {
         try {
             return historicalService.saveFiles(historicalId, fileEventResponse);
         } catch (Exception e) {
