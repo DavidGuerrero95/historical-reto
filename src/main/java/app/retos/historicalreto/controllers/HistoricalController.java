@@ -25,12 +25,12 @@ public class HistoricalController {
     @PostMapping("/crear")
     public String crearHistorico(@RequestParam("eventId") String eventId, @RequestParam("type") Integer type,
                                  @RequestParam("date") String date, @RequestParam("time") String time,
-                                 @RequestParam("eventDescription") String eventDescription,
+                                 @RequestParam("typeEmergency") Integer typeEmergency,
                                  @RequestParam("location") List<Double> location, @RequestParam("status") Integer status,
                                  @RequestParam("comment") String comment, @RequestParam("zoneCode") Integer zoneCode) throws IOException {
         try {
             log.info("Se conecto correctamente");
-            return historicalService.guardarEvento(eventId, type, date, time, eventDescription, location, status, comment, zoneCode);
+            return historicalService.guardarEvento(eventId, type, date, time, typeEmergency, location, status, comment, zoneCode);
         } catch (Exception e) {
             throw new IOException("Error crear historico del evento: " + eventId + " Error: " + e.getMessage());
         }
@@ -91,6 +91,12 @@ public class HistoricalController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<Historical> listaType(@PathVariable("type") Integer type) {
         return historicalRepository.findByType(type);
+    }
+
+    @DeleteMapping("/eliminar-todo")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void eliminarTodo(){
+        historicalService.eliminarTodo();
     }
 
 }
