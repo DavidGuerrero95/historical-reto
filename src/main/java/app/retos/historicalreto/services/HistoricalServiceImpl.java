@@ -19,7 +19,7 @@ public class HistoricalServiceImpl implements IHistoricalService {
     HistoricalRepository historicalRepository;
 
     @Override
-    public String guardarEvento(String eventId, Integer type, String date, String time, String eventDescription, List<Double> location, Integer status, String comment, Integer zoneCode) {
+    public String guardarEvento(String eventId, Integer type, String date, String time, Integer typeEmergency, List<Double> location, Integer status, String comment, Integer zoneCode) {
         List<Historical> historicalList = historicalRepository.findByEventId(eventId);
         if(historicalList.size() > 5){
             Historical h = historicalList.get(0);
@@ -31,7 +31,7 @@ public class HistoricalServiceImpl implements IHistoricalService {
         String hour = time.substring(0, 2);
         String minute = time.substring(3, 5);
         String second = time.substring(6, 8);
-        Historical historical = new Historical(eventId, type, day, month, year, hour, minute, second, eventDescription, location, status,
+        Historical historical = new Historical(eventId, type, day, month, year, hour, minute, second, typeEmergency, location, status,
                 comment, zoneCode, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         historicalRepository.save(historical);
         Historical h = historicalRepository.findByEventIdAndYearAndMonthAndDayAndHourAndZoneCodeAndLocationAndMinuteAndSecond(eventId, year, month, day, hour, zoneCode, location, minute, second);
@@ -50,5 +50,10 @@ public class HistoricalServiceImpl implements IHistoricalService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void eliminarTodo() {
+        historicalRepository.deleteAll();
     }
 }
