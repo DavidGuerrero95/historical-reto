@@ -65,6 +65,10 @@ public class HistoricalServiceImpl implements IHistoricalService {
     @Override
     public HashMap findAllFilters(RequestHistorical requestHistorical) {
         Pageable pageable;
+        if(requestHistorical.getSize() == null) requestHistorical.setSize(0);
+        if(requestHistorical.getPage() == null) requestHistorical.setPage(0);
+        if(requestHistorical.getFilter() == null) requestHistorical.setFilter("id");
+        if(requestHistorical.getOrder() == null) requestHistorical.setOrder(true);
         if (requestHistorical.getOrder()) {
             pageable = PageRequest.of(requestHistorical.getPage(), requestHistorical.getSize(),
                     Sort.by(requestHistorical.getFilter()).ascending());
