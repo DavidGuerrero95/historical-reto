@@ -3,14 +3,19 @@ package app.retos.historicalreto.services;
 import app.retos.historicalreto.models.Historical;
 import app.retos.historicalreto.repository.HistoricalRepository;
 import app.retos.historicalreto.request.FileEventResponse;
+import app.retos.historicalreto.request.RequestHistorical;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 @Service
 @Slf4j
 public class HistoricalServiceImpl implements IHistoricalService {
@@ -55,5 +60,23 @@ public class HistoricalServiceImpl implements IHistoricalService {
     @Override
     public void eliminarTodo() {
         historicalRepository.deleteAll();
+    }
+
+    @Override
+    public HashMap findAllFilters(RequestHistorical requestHistorical) {
+        Pageable pageable;
+        if (requestHistorical.getOrder()) {
+            pageable = PageRequest.of(requestHistorical.getPage(), requestHistorical.getSize(),
+                    Sort.by(requestHistorical.getFilter()).ascending());
+        } else {
+            pageable = PageRequest.of(requestHistorical.getPage(), requestHistorical.getSize(),
+                    Sort.by(requestHistorical.getFilter()).descending());
+        }
+        Page<Historical> all = historicalRepository.findAll(pageable);
+        HashMap response = new HashMap<>();
+        response.put("TotalData",all.getTotalElements());
+        response.put("totalPages",all.getTotalPages());
+        response.put("data",all.get());
+        return response;
     }
 }
