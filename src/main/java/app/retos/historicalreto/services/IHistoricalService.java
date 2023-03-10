@@ -1,7 +1,9 @@
 package app.retos.historicalreto.services;
 
 import app.retos.historicalreto.request.FileEventResponse;
+import app.retos.historicalreto.request.RequestHistorical;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface IHistoricalService {
@@ -12,4 +14,6 @@ public interface IHistoricalService {
     boolean saveFiles(String historicalId, FileEventResponse fileEventResponse);
 
     void eliminarTodo();
+
+    HashMap findAllFilters(RequestHistorical requestHistorical);
 }

@@ -3,6 +3,7 @@ package app.retos.historicalreto.controllers;
 import app.retos.historicalreto.models.Historical;
 import app.retos.historicalreto.repository.HistoricalRepository;
 import app.retos.historicalreto.request.FileEventResponse;
+import app.retos.historicalreto.request.RequestHistorical;
 import app.retos.historicalreto.services.IHistoricalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -43,6 +45,12 @@ public class HistoricalController {
         } catch (Exception e) {
             throw new IOException("Error en la edicion de archivos " + e.getMessage());
         }
+    }
+
+    @GetMapping("listar-filtro")
+    @ResponseStatus(code = HttpStatus.OK)
+    public HashMap listHistoricalFilter(@RequestBody RequestHistorical requestHistorical) {
+        return historicalService.findAllFilters(requestHistorical);
     }
 
     @GetMapping("/listar")
